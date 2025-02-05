@@ -1,0 +1,143 @@
+{
+    "2024-11-21": {
+      "morning": 3,
+      "afternoon": 2,
+      "evening": 1,
+      "average": 2.0,
+      "category": "high"
+    },
+    "2024-12-02": {
+      "morning": 0.6,
+      "afternoon": 0.8,
+      "evening": 0.0,
+      "average": 0.7,
+      "category": "mid"
+    },
+    "2024-11-03": {
+      "morning": 0.9,
+      "afternoon": 0.0,
+      "evening": 1.1,
+      "average": 1.0,
+      "category": "high"
+    },
+    "2024-12-01": {
+      "morning": 0.5,
+      "afternoon": 0.7,
+      "evening": 0.6,
+      "average": 0.6,
+      "category": "low"
+    },
+    "2024-11-05": {
+      "morning": 0.8,
+      "afternoon": 0.9,
+      "evening": 0.0,
+      "average": 0.85,
+      "category": "mid"
+    },
+    "2024-11-26": {
+      "morning": 1.2,
+      "afternoon": 1.0,
+      "evening": 0.9,
+      "average": 1.03,
+      "category": "high"
+    },
+    "2024-11-07": {
+      "morning": 0.6,
+      "afternoon": 0.0,
+      "evening": 0.7,
+      "average": 0.65,
+      "category": "low"
+    },
+    "2024-11-08": {
+      "morning": 1.1,
+      "afternoon": 1.0,
+      "evening": 1.2,
+      "average": 1.1,
+      "category": "high"
+    },
+    "2024-11-19": {
+      "morning": 0.7,
+      "afternoon": 0.8,
+      "evening": 0.7,
+      "average": 0.73,
+      "category": "mid"
+    },
+    "2024-11-29": {
+      "morning": 0.9,
+      "afternoon": 0.6,
+      "evening": 0.0,
+      "average": 0.75,
+      "category": "mid"
+    },
+    "2024-11-16": {
+      "morning": 0.5,
+      "afternoon": 0.5,
+      "evening": 0.5,
+      "average": 0.5,
+      "category": "low"
+    },
+    "2024-11-20": {
+      "morning": 1.0,
+      "afternoon": 1.1,
+      "evening": 0.0,
+      "average": 1.05,
+      "category": "high"
+    },
+    "2024-11-13": {
+      "morning": 0.8,
+      "afternoon": 0.8,
+      "evening": 0.8,
+      "average": 0.8,
+      "category": "mid"
+    },
+    "2024-11-01": {
+      "morning": 0.95,
+      "afternoon": 0,
+      "evening": 0,
+      "average": 0.95,
+      "category": "high"
+    },
+    "2024-11-02": {
+      "morning": 0.94,
+      "afternoon": 0,
+      "evening": 0,
+      "average": 0.94,
+      "category": "high"
+    },
+    "2024-11-23": {
+      "morning": 0,
+      "afternoon": 0,
+      "evening": 0.54,
+      "average": 0.54,
+      "category": "low"
+    },
+    "2024-11-04": {
+      "morning": 0,
+      "afternoon": 0.91,
+      "evening": 0,
+      "average": 0.91,
+      "category": "high"
+    },
+    "2024-11-15": {
+      "morning": 0,
+      "afternoon": 0.5,
+      "evening": 0.75,
+      "average": 0.62,
+      "category": "low"
+    },
+    "2024-11-06": {
+      "morning": 0.73,
+      "afternoon": 0,
+      "evening": 1.15,
+      "average": 0.94,
+      "category": "high"
+    },
+    "2024-11-17": {
+      "morning": 0.87,
+      "afternoon": 0,
+      "evening": 0,
+      "average": 0.87,
+      "category": "mid"
+    }
+  }
+  
