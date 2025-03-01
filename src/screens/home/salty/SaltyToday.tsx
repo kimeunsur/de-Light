@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, ActivityIndicator, Image, ScrollView } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
 import babgood from '../src/babgood.png';
 
-export default function App() {
-  const [selectedCard, setSelectedCard] = useState(null);
+const App: React.FC = () => {
 
   return (
     <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.container}>
       <View style={[styles.card, styles.redBorder]}>
         <Text style={styles.cardTitle}>오늘 하루</Text>
-        <Text style={styles.score}>30점 <Text style={styles.maxScore}>/ 100</Text></Text>
+        <Text style={styles.score}>
+          30점 <Text style={styles.maxScore}>/ 100</Text>
+        </Text>
         <Image style={styles.image} source={babgood} />
         <View style={styles.nutrientContainer}>
           <View style={styles.nutrientItem}>
@@ -38,7 +39,7 @@ export default function App() {
               <Text style={styles.iconText}>당</Text>
             </View>
             <Text style={styles.infoValue}>15 brix</Text>
-          </View>        
+          </View>
         </View>
 
         <Text style={styles.warning}>단백질이 부족! 너무 달아요!</Text>
@@ -73,7 +74,7 @@ export default function App() {
               <Text style={styles.iconText}>당</Text>
             </View>
             <Text style={styles.infoValue}>15 brix</Text>
-          </View>        
+          </View>
         </View>
       </View>
 
@@ -105,12 +106,12 @@ export default function App() {
               <Text style={styles.iconText}>당</Text>
             </View>
             <Text style={styles.infoValue}>15 brix</Text>
-          </View>        
+          </View>
         </View>
       </View>
     </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   scrollContainer: {
@@ -217,7 +218,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     color: '#333',
-  },  
+  },
   warning: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -241,3 +242,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+export default App;

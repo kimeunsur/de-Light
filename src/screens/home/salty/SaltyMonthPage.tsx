@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import RNFS from 'react-native-fs'; // react-native-fs
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 
+// Locale 설정
 LocaleConfig.locales.fr = {
   monthNames: [
     '01월', '02월', '03월', '04월', '05월', '06월', '07월', '08월', '09월', '10월', '11월', '12월',
@@ -16,63 +17,94 @@ LocaleConfig.locales.fr = {
 };
 LocaleConfig.defaultLocale = 'fr';
 
-const SaltyMonthPage = () => {
-  const [markedDates, setMarkedDates] = useState({});
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [dayDetails, setDayDetails] = useState(null);
-  const [classifiedData, setClassifiedData] = useState(null);
+// 각 날짜의 데이터 타입
+interface DayData {
+  morning: number;
+  afternoon: number;
+  evening: number;
+  average: number;
+  category: string;
+}
+
+// Calendar의 markedDates에 사용될 타입
+interface MarkedDate {
+  marked: boolean;
+  dotColor: string;
+  customStyles: {
+    container: {
+      borderRadius: number;
+      height: number;
+      width: number;
+    };
+  };
+}
+
+// Calendar에서 onDayPress 이벤트의 파라미터 타입
+interface CalendarDay {
+  dateString: string;
+  // 기타 필요한 속성이 있다면 추가할 수 있음
+}
+
+const SaltyMonthPage: React.FC = () => {
+  const [markedDates, setMarkedDates] = useState<Record<string, MarkedDate>>({});
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [dayDetails, setDayDetails] = useState<DayData | null>(null);
+  const [classifiedData, setClassifiedData] = useState<Record<string, DayData> | null>(null);
 
   // 파일 읽기 함수
-  const readJSONFromFile = async () => {
-    const filePath = '/Users/kimeunsur/APP/src/salty/salty_data.json';
-    const fileContent = await RNFS.readFile(filePath);
-    const parsedData = JSON.parse(fileContent);
-    setClassifiedData(parsedData);
+  const readJSONFromFile = async (): Promise<void> => {
+    try {
+      const filePath = '/Users/kimeunsur/APP/src/salty/salty_data.json';
+      const fileContent = await RNFS.readFile(filePath);
+      const parsedData: Record<string, DayData> = JSON.parse(fileContent);
+      setClassifiedData(parsedData);
 
-    // 날짜별로 마킹 설정
-    const marked = {};
-    for (const date in parsedData) {
-      const status = parsedData[date]['category'];
-      if (status === 'high') {
-        marked[date] = {
-          marked: true,
-          dotColor: 'red',
-          customStyles: {
-            container: { borderRadius: 8, height: 10, width: 10 }, // 동그라미 크기 조정
-          },
-        };
-      } else if (status === 'mid') {
-        marked[date] = {
-          marked: true,
-          dotColor: 'green',
-          customStyles: {
-            container: { borderRadius: 8, height: 10, width: 10 },
-          },
-        };
-      } else {
-        marked[date] = {
-          marked: true,
-          dotColor: 'pink',
-          customStyles: {
-            container: { borderRadius: 8, height: 10, width: 10 },
-          },
-        };
+      // 날짜별로 마킹 설정
+      const marked: Record<string, MarkedDate> = {};
+      for (const date in parsedData) {
+        const status = parsedData[date].category;
+        if (status === 'high') {
+          marked[date] = {
+            marked: true,
+            dotColor: 'red',
+            customStyles: {
+              container: { borderRadius: 8, height: 10, width: 10 },
+            },
+          };
+        } else if (status === 'mid') {
+          marked[date] = {
+            marked: true,
+            dotColor: 'green',
+            customStyles: {
+              container: { borderRadius: 8, height: 10, width: 10 },
+            },
+          };
+        } else {
+          marked[date] = {
+            marked: true,
+            dotColor: 'pink',
+            customStyles: {
+              container: { borderRadius: 8, height: 10, width: 10 },
+            },
+          };
+        }
       }
+      setMarkedDates(marked);
+    } catch (error) {
+      console.error('Error reading file: ', error);
     }
-    setMarkedDates(marked);
   };
 
   useEffect(() => {
     readJSONFromFile();
   }, []);
 
-  const handleDayPress = (day) => {
+  const handleDayPress = (day: CalendarDay): void => {
     const date = day.dateString;
     setSelectedDate(date);
 
-    const dayDetails = classifiedData[date];
-    if (dayDetails) {
-      setDayDetails(dayDetails);
+    if (classifiedData && classifiedData[date]) {
+      setDayDetails(classifiedData[date]);
     } else {
       setDayDetails(null);
     }
@@ -80,7 +112,6 @@ const SaltyMonthPage = () => {
 
   return (
     <View style={styles.container}>
-
       {/* 캘린더 */}
       <Calendar
         markedDates={markedDates}
@@ -120,21 +151,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
     padding: 20,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 20,
-  },
-  arrow: {
-    fontSize: 20,
-    color: '#333',
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
   },
   calendar: {
     borderRadius: 10,

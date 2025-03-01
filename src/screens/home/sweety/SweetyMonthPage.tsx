@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
-import RNFS from 'react-native-fs'; // react-native-fs
+import { View, Text, StyleSheet } from 'react-native';
+import RNFS from 'react-native-fs';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
-import CommonHeader from '../../CommonHeader';
 
+// Locale 설정
 LocaleConfig.locales.fr = {
   monthNames: [
     '01월', '02월', '03월', '04월', '05월', '06월', '07월', '08월', '09월', '10월', '11월', '12월',
@@ -17,62 +17,77 @@ LocaleConfig.locales.fr = {
 };
 LocaleConfig.defaultLocale = 'fr';
 
-const cvtParamDate = (date) => { 
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-};
+// JSON 파일에 있는 날짜 데이터 타입
+interface DayData {
+  morning: number;
+  afternoon: number;
+  evening: number;
+  category: string;
+  // 기타 필요한 필드가 있다면 추가
+}
 
-const SweetyMonthPage = () => {
+// Calendar에서 onDayPress 이벤트에 전달되는 파라미터 타입
+interface CalendarDay {
+  dateString: string;
+  // 필요한 추가 필드가 있으면 정의 가능
+}
 
-  const [markedDates, setMarkedDates] = useState({}); // 캘린더에 표시할 날짜 마킹 상태
-  const [selectedDate, setSelectedDate] = useState(null); // 선택된 날짜를 null? 아님 오늘?
-  const [dayDetails, setDayDetails] = useState(null); // 선택된 날짜의 세부 정보
-  const [classifiedData, setClassifiedData] = useState(null); // 파일에서 읽어온 데이터
+// Calendar의 markedDates에 사용할 타입
+interface MarkedDate {
+  selected: boolean;
+  selectedColor: string;
+}
+
+
+const SweetyMonthPage: React.FC = () => {
+  const [markedDates, setMarkedDates] = useState<Record<string, MarkedDate>>({});
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [dayDetails, setDayDetails] = useState<DayData | null>(null);
+  const [classifiedData, setClassifiedData] = useState<Record<string, DayData> | null>(null);
 
   // 파일 읽기 함수
-  const readJSONFromFile = async () => {
-    const filePath = '/Users/kimeunsur/APP/src/sweety/sweety_data.json'; //계속 RNFS 실패해서....
-    const fileContent = await RNFS.readFile(filePath);
-    const parsedData = JSON.parse(fileContent); 
-    setClassifiedData(parsedData);
+  const readJSONFromFile = async (): Promise<void> => {
+    try {
+      const filePath = '/Users/kimeunsur/APP/src/sweety/sweety_data.json';
+      const fileContent = await RNFS.readFile(filePath);
+      const parsedData: Record<string, DayData> = JSON.parse(fileContent);
+      setClassifiedData(parsedData);
 
-    // 각 날짜별로 색상 마킹 설정
-    const marked = {};
-    for (const date in parsedData) {
-      const status = parsedData[date]['category'];
-      if (status === 'high') {
-        marked[date] = { selected: true, selectedColor: 'red' };
-      } else if (status === 'mid') {
-        marked[date] = { selected: true, selectedColor: 'green' };
-      } else {
-        marked[date] = { selected: true, selectedColor: 'yellow' };
+      // 날짜별 마킹 설정
+      const marked: Record<string, MarkedDate> = {};
+      for (const date in parsedData) {
+        const status = parsedData[date].category;
+        if (status === 'high') {
+          marked[date] = { selected: true, selectedColor: 'red' };
+        } else if (status === 'mid') {
+          marked[date] = { selected: true, selectedColor: 'green' };
+        } else {
+          marked[date] = { selected: true, selectedColor: 'yellow' };
+        }
       }
+      setMarkedDates(marked);
+    } catch (error) {
+      console.error('Error reading JSON file:', error);
     }
-    setMarkedDates(marked);
   };
 
   useEffect(() => {
-    readJSONFromFile(); 
+    readJSONFromFile();
   }, []);
 
-
-  const handleDayPress = (day) => {
-
+  const handleDayPress = (day: CalendarDay): void => {
     const date = day.dateString;
     setSelectedDate(date);
 
-    const dayDetails = classifiedData[date];
-    if (dayDetails) {
-      setDayDetails(dayDetails);
+    if (classifiedData && classifiedData[date]) {
+      setDayDetails(classifiedData[date]);
     } else {
-      setDayDetails(null); // 해당 날짜가 데이터에 없으면 null 처리
+      setDayDetails(null);
     }
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Calendar
         markedDates={markedDates}
         onDayPress={handleDayPress}
@@ -96,15 +111,9 @@ const SweetyMonthPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    padding: 20,
   },
-
-  selectedDateText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-
 });
 
 export default SweetyMonthPage;
