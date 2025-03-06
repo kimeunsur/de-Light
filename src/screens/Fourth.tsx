@@ -1,10 +1,9 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Ionicons from "react-native-vector-icons/Ionicons"; 
-import GoalPage from "./GoalPage";
-import MonthPage from "./home/salty/SaltyMonthPage";
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons'; 
+import GoalPage from './GoalPage';
+import MonthPage from './home/salty/SaltyMonthPage';
 
 // 하단 탭 네비게이터 생성
 const Tab = createBottomTabNavigator();
@@ -44,12 +43,3 @@ export default function Fourth() {
         </NavigationContainer>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#fff",
-    },
-});

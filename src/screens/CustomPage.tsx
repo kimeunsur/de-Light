@@ -1,16 +1,32 @@
 // CustomPage.js
-import React from "react";
-import { useWindowDimensions } from "react-native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Ionicons from "react-native-vector-icons/Ionicons"; 
+import React from 'react';
+import { useWindowDimensions } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons'; 
 import SaltyPage from './SaltyPage';
 import SweetPage from './home/sweety/SweetyPage';
 
+const Tab = createBottomTabNavigator();
 
-export default function CustomPage() { 
+type IoniconName =
+    |'home'
+    |'fast-food'
+    |'water'
+    |'settings';
+
+interface TabBarIconProps {
+    name: IoniconName;
+    color: string;
+    size: number;
+}
+
+const TabBarIcon: React.FC<TabBarIconProps> = ({name, color, size}) => {
+    return <Ionicons name={name} color={color} size={size} />
+};
+
+export default function CustomPage() {
     const { height } = useWindowDimensions();
     const tabHeight = height * 0.07; // 탭 높이 설정
-    const Tab = createBottomTabNavigator();    
     return (
         <Tab.Navigator
             screenOptions={{
@@ -25,9 +41,8 @@ export default function CustomPage() {
                 component={SaltyPage} 
                 options={{ 
                     title: '염도', 
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="water" color={color} size={size} />
-                    ),
+                    tabBarIcon: ({ color, size }) => 
+                        <TabBarIcon name="water" color={color} size={size} />
                 }} 
             />
             <Tab.Screen 
@@ -35,9 +50,8 @@ export default function CustomPage() {
                 component={SweetPage} 
                 options={{ 
                     title: '당도', 
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons name="fast-food" color={color} size={size} />
-                    ),
+                    tabBarIcon: ({ color, size }) =>
+                        <TabBarIcon name="fast-food" color={color} size={size} />
                 }} 
             />
         </Tab.Navigator>    
